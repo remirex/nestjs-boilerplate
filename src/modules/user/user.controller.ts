@@ -21,6 +21,7 @@ import { UserService } from './user.service';
 export class UserController {
   constructor(private userService: UserService) {}
 
+  @UseInterceptors(new TransformDataInterceptor(UserDto))
   @Get()
   getUsers() {
     return this.userService.getUsers();
@@ -32,11 +33,13 @@ export class UserController {
     return this.userService.getUser(userId);
   }
 
+  @UseInterceptors(new TransformDataInterceptor(UserDto))
   @Post('create')
   createUser(@Body() dto: CreateUserDto) {
     return this.userService.createUser(dto);
   }
 
+  @UseInterceptors(new TransformDataInterceptor(UserDto))
   @Patch(':id')
   editUserById(
     @Param('id', ParseIntPipe) userId: number,
