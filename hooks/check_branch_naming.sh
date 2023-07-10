@@ -1,13 +1,20 @@
 #!/usr/bin/env bash
-local_branch_name="$(git rev-parse --abbrev-ref HEAD)"
 
-valid_branch_regex='^(master|main|develop){1}$|^((feature|fix|hotfix|bug)\/[a-zA-Z0-9\-]+)$'
-
-message="There is something wrong with your branch name. Branch names in this project must adhere to this contract: $valid_branch_regex. Your commit will be rejected. You should rename your branch to a valid name and try again."
-
-if [[ ! $local_branch_name =~ $valid_branch_regex ]]; then
-    echo "$message"
+branch_name_format='(^(feature|fix|hotfix|bug)[/])|^develop|master|main'
+error_msg="❌ Push not allowed, branch name should starts with feature,fix,hotfix,bug or develop,master & main"
+BRANCH_NAME=$(git symbolic-ref --short HEAD)
+echo "$BRANCH_NAME"
+if [[ ! $BRANCH_NAME =~ $branch_name_format ]]; then
+    echo "$error_msg" >&2
+    echo "Below are sample branch names"
+    echo "feature/<anything>"
+    echo "fix/<anything>"
+    echo "hotfix/<anything>"
+    echo "bug/<anything>"
+    echo "develop.*"
+    echo "master"
+    echo "main"
     exit 1
+else
+    echo "🎉 Push is successful ✨🚀🏄‍♂️🍻"
 fi
-
-exit 0
