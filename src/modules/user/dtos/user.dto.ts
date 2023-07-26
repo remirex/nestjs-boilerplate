@@ -12,4 +12,7 @@ export class UserDto implements User {
 
   @Exclude()
   password: string;
+
+  @Exclude()
+  hashedRt: string;
 }
