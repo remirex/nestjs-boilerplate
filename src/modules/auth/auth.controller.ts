@@ -1,4 +1,6 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, UseInterceptors } from '@nestjs/common';
+import { TransformDataInterceptor } from 'src/interceptors/transform-data.interceptor';
+import { UserDto } from '../user/dtos/user.dto';
 import { AuthService } from './auth.service';
 import { SignupDto } from './dtos/signup.dto';
 
@@ -6,6 +8,7 @@ import { SignupDto } from './dtos/signup.dto';
 export class AuthController {
   constructor(private authService: AuthService) {}
 
+  @UseInterceptors(new TransformDataInterceptor(UserDto))
   @Post('/local/signup')
   signupLocal(@Body() dto: SignupDto) {
     return this.authService.signupLocal(dto);

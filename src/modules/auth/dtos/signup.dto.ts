@@ -1,6 +1,9 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty, IsString, MinLength } from 'class-validator';
-import { EmailNotRegistered } from 'src/decorators/validator.decorators';
+import {
+  EmailNotRegistered,
+  PasswordMatch,
+} from 'src/decorators/validator.decorators';
 
 export class SignupDto {
   @ApiProperty()
@@ -25,4 +28,10 @@ export class SignupDto {
   @MinLength(8)
   @IsNotEmpty()
   password: string;
+
+  @ApiProperty()
+  @IsString()
+  @MinLength(8)
+  @PasswordMatch('password')
+  passwordConfirmation: string;
 }
