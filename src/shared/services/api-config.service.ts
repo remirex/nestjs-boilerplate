@@ -44,6 +44,19 @@ export class ApiConfigService {
     };
   }
 
+  get authConfig() {
+    return {
+      privateAccessTokenKey: this.getString('JWT_ACCESS_TOKEN_PRIVATE_KEY'),
+      privateRefreshTokenKey: this.getString('JWT_REFRESH_TOKEN_PRIVATE_KEY'),
+      jwtExpirationAccessTokenTime: this.getString(
+        'JWT_ACCESS_TOKEN_EXPIRATION_TIME',
+      ),
+      jwtExpirationRefreshTokenTime: this.getString(
+        'JWT_REFRESH_TOKEN_EXPIRATION_TIME',
+      ),
+    };
+  }
+
   get documentationEnabled(): boolean {
     return this.getBoolean('ENABLE_DOCUMENTATION');
   }

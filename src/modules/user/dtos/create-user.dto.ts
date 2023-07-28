@@ -7,7 +7,7 @@ import {
   IsString,
   MinLength,
 } from 'class-validator';
-import { RoleType } from 'src/constants/role-type';
+import { Role } from 'src/constants/role';
 import { EmailNotRegistered } from 'src/decorators/validator.decorators';
 
 export class CreateUserDto {
@@ -34,8 +34,8 @@ export class CreateUserDto {
   @IsNotEmpty()
   password: string;
 
-  @ApiPropertyOptional({ enum: [RoleType.GUEST, RoleType.ADMIN] })
-  @IsEnum(RoleType)
+  @ApiPropertyOptional({ enum: [Role.GUEST, Role.ADMIN] })
+  @IsEnum(Role)
   @IsOptional()
-  role?: RoleType.GUEST;
+  role?: Role.GUEST;
 }

@@ -2,6 +2,7 @@ import { Body, Controller, Post, UseInterceptors } from '@nestjs/common';
 import { TransformDataInterceptor } from 'src/interceptors/transform-data.interceptor';
 import { UserDto } from '../user/dtos/user.dto';
 import { AuthService } from './auth.service';
+import { SigninDto } from './dtos/signin.dto';
 import { SignupDto } from './dtos/signup.dto';
 
 @Controller('auth')
@@ -15,8 +16,8 @@ export class AuthController {
   }
 
   @Post('/local/signin')
-  signinLocal() {
-    return this.authService.signinLocal();
+  signinLocal(@Body() dto: SigninDto) {
+    return this.authService.signinLocal(dto);
   }
 
   @Post('/logout')
