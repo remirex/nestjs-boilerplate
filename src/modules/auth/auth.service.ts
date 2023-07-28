@@ -36,10 +36,6 @@ export class AuthService {
     });
     // compare password
     const passwordMatches = await validateHash(dto.password, user.password);
-    console.log(
-      '🚀 ~ file: auth.service.ts:39 ~ AuthService ~ signinLocal ~ passwordMatches:',
-      passwordMatches,
-    );
     if (!passwordMatches) throw new ForbiddenException('Access Denied');
     // return access & refresh tokens
     const tokens = await this.getTokens(user.id, user.email, user.role);
