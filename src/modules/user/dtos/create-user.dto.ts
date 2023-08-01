@@ -7,7 +7,7 @@ import {
   IsString,
   MinLength,
 } from 'class-validator';
-import { Role } from 'src/constants/role';
+import { Role } from 'src/constants';
 import { EmailNotRegistered } from 'src/decorators/validator.decorators';
 
 export class CreateUserDto {

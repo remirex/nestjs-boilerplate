@@ -6,7 +6,7 @@ import {
   IsString,
   MinLength,
 } from 'class-validator';
-import { Role } from 'src/constants/role';
+import { Role } from 'src/constants';
 
 export class EditUserDto {
   @ApiPropertyOptional()
