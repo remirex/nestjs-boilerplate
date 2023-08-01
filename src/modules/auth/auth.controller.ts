@@ -6,8 +6,9 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
 import { Request } from 'express';
+import { GetCurrentUserId } from 'src/decorators/get-current-user-id.decorator';
+import { GetCurrentUser } from 'src/decorators/get-current-user.decorator';
 import { AtGuard } from 'src/guards/at.guard';
 import { TransformDataInterceptor } from 'src/interceptors/transform-data.interceptor';
 import { UserDto } from '../user/dtos/user.dto';
@@ -33,8 +34,8 @@ export class AuthController {
 
   @UseGuards(AtGuard)
   @Post('/logout')
-  logout(@Req() req: Request, userId: number): Promise<boolean> {
-    console.log(req.user['sub']);
+  logout(@GetCurrentUserId() userId: number): Promise<boolean> {
+    console.log(userId);
     return this.authService.logout(userId);
   }
 
