@@ -54,8 +54,19 @@ export class AuthService {
     return true;
   }
 
-  refreshTokens() {
-    return 'refresh tokens';
+  async refreshTokens(userId: number, refreshToken: string): Promise<Tokens> {
+    const user = await this.prisma.user.findUniqueOrThrow({
+      where: { id: userId },
+    });
+    if (!user.hashedRt) throw new ForbiddenException('Access Denied');
+
+    const refreshTokensMatches = validateHash(refreshToken, user.hashedRt);
+    if (!refreshTokensMatches) throw new ForbiddenException('Access Denied');
+
+    const tokens = await this.getTokens(user.id, user.email, user.role);
+    await this.updateRtHash(user.id, tokens.refresh_token);
+
+    return tokens;
   }
 
   async updateRtHash(userId: number, refreshToken: string): Promise<void> {
