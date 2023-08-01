@@ -22,7 +22,7 @@ export class AuthController {
 
   @Post('/logout')
   logout() {
-    return this.authService.logout();
+    //return this.authService.logout();
   }
 
   @Post('/refresh')
