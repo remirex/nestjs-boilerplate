@@ -29,6 +29,7 @@ export class AuthService {
     // return saved user
     return user;
   }
+
   async signinLocal(dto: SigninDto): Promise<Tokens> {
     // find user
     const user = await this.prisma.user.findUniqueOrThrow({
@@ -39,14 +40,32 @@ export class AuthService {
     if (!passwordMatches) throw new ForbiddenException('Access Denied');
     // return access & refresh tokens
     const tokens = await this.getTokens(user.id, user.email, user.role);
+    // update refresh token
+    await this.updateRtHash(user.id, tokens.refresh_token);
 
     return tokens;
   }
-  logout() {
-    return 'logout';
+
+  async logout(userId: number): Promise<boolean> {
+    await this.prisma.user.updateMany({
+      where: { id: userId, hashedRt: { not: null } },
+      data: { hashedRt: null },
+    });
+    return true;
   }
+
   refreshTokens() {
     return 'refresh tokens';
+  }
+
+  async updateRtHash(userId: number, refreshToken: string): Promise<void> {
+    const hash = generateHash(refreshToken);
+    await this.prisma.user.update({
+      where: { id: userId },
+      data: {
+        hashedRt: hash,
+      },
+    });
   }
 
   async getTokens(
